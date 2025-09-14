@@ -8,7 +8,7 @@ namespace lilygo_t5_47_display {
 
 static const char *const TAG = "lilygo_t5_47_display";
 
-float LilygoT547Display::get_setup_priority() const { return esphome::setup_priority::PROCESSOR; }
+float LilygoT547Display::get_setup_priority() const { return esphome::setup_priority::LATE; }
 
 void LilygoT547Display::set_clear_screen(bool clear) { this->clear_ = clear; }
 void LilygoT547Display::set_power_off_delay_enabled(bool power_off_delay_enabled) {
@@ -33,10 +33,6 @@ void LilygoT547Display::setup() {
     epd_set_rotation(orientation);
   }
   fb = epd_hl_get_framebuffer(&hl);
-  
-  // Initialize the display buffer for ESPHome 2025.x compatibility
-  uint32_t buffer_length = this->get_width_internal() * this->get_height_internal();
-  this->init_internal_(buffer_length);
 }
 
 void LilygoT547Display::update() {
