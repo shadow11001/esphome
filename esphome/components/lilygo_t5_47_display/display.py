@@ -13,6 +13,8 @@ CONF_LANDSCAPE = "landscape"
 CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
 
 lilygo_t5_47_display_ns = cg.esphome_ns.namespace("lilygo_t5_47_display")
+# Note: PollingComponent inherits from Component, so we don't need to explicitly declare cg.Component
+# This matches the C++ inheritance: public display::DisplayBuffer, public PollingComponent
 LilygoT547Display = lilygo_t5_47_display_ns.class_(
     "LilygoT547Display", cg.PollingComponent, display.DisplayBuffer
 )
