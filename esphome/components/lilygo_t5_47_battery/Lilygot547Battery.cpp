@@ -4,6 +4,10 @@
 namespace esphome {
 namespace lilygo_t5_47_battery {
 
+static const char *const TAG = "lilygo_t5_47_battery";
+
+float Lilygot547Battery::get_setup_priority() const { return esphome::setup_priority::DATA; }
+
 void Lilygot547Battery::setup() {}
 
 void Lilygot547Battery::update() {
