@@ -35,7 +35,7 @@ void LilygoT547Display::setup() {
   fb = epd_hl_get_framebuffer(&hl);
   
   // Initialize the display buffer for ESPHome 2025.x compatibility
-  uint32_t buffer_length = this->get_width_internal() * this->get_height_internal() / 8;
+  uint32_t buffer_length = this->get_width_internal() * this->get_height_internal();
   this->init_internal_(buffer_length);
 }
 
