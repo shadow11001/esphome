@@ -14,7 +14,7 @@ CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
 
 lilygo_t5_47_display_ns = cg.esphome_ns.namespace("lilygo_t5_47_display")
 LilygoT547Display = lilygo_t5_47_display_ns.class_(
-    "LilygoT547Display", cg.Component, display.DisplayBuffer, cg.PollingComponent
+    "LilygoT547Display", cg.PollingComponent, display.DisplayBuffer
 )
 
 CONFIG_SCHEMA = cv.All(
