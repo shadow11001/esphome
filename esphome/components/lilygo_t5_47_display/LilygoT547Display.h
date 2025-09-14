@@ -16,7 +16,7 @@ namespace esphome {
 namespace lilygo_t5_47_display {
 
 // LilyGo-EPD47
-class LilygoT547Display : public PollingComponent, public display::DisplayBuffer {
+class LilygoT547Display : public display::DisplayBuffer, public PollingComponent {
  protected:
   EpdiyHighlevelState hl;
   // ambient temperature around device
@@ -31,9 +31,9 @@ class LilygoT547Display : public PollingComponent, public display::DisplayBuffer
   void set_power_off_delay_enabled(bool power_off_delay_enabled);
   void set_temperature(uint32_t temperature);
 
-  int get_width_internal();
+  int get_width_internal() override;
 
-  int get_height_internal();
+  int get_height_internal() override;
 
   void setup() override;
 
