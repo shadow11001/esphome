@@ -9,6 +9,8 @@ from esphome.const import (
     STATE_CLASS_MEASUREMENT,
 )
 
+DEPENDENCIES = ["esp32"]
+
 from . import lilygo_t5_47_battery_ns
 
 Lilygot547Battery = lilygo_t5_47_battery_ns.class_(
