@@ -7,6 +7,8 @@ from esphome.const import (
     CONF_PAGES,
 )
 
+DEPENDENCIES = ["esp32"]
+
 CONF_CLEAR = "clear"
 CONF_TEMPERATURE = "temperature"
 CONF_LANDSCAPE = "landscape"
