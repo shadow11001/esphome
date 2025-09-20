@@ -1,3 +1,16 @@
+# Test configuration for LilyGo T5-4.7 board support
+# This configuration validates the updated LilyGo T5-4.7 components
+# with ESPHome 2025.9.1 compatibility
+#
+# Hardware Requirements:
+# - LilyGo T5-4.7 ESP32 board with 4.7" E-Paper display
+# - Battery connected for voltage monitoring
+#
+# Updated Features:
+# - epdiy library pinned to version ^1.0.0 for reproducible builds
+# - Compatible with latest Arduino ESP32 and ESP-IDF frameworks
+# - Version compatibility updated for ESPHome 2025.9.1+
+
 esphome:
   name: test-lilygo-t5-47
   platform: ESP32
