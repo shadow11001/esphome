@@ -4,13 +4,13 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
 
-#include <driver/adc.h>
-#include "esp_adc_cal.h"
+#include "esp_adc/adc_oneshot.h"
+#include "esp_adc/adc_cali.h"
+#include "esp_adc/adc_cali_scheme.h"
 
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
-#include "epd_driver.h"
-#include "epd_highlevel.h"
+#include "epdiy.h"
 #endif
 
 namespace esphome {
