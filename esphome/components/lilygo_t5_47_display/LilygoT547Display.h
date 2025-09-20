@@ -15,7 +15,7 @@ namespace esphome {
 namespace lilygo_t5_47_display {
 
 // LilyGo-EPD47
-class LilygoT547Display : public virtual PollingComponent, public virtual display::DisplayBuffer {
+class LilygoT547Display : public PollingComponent, public display::DisplayBuffer {
  protected:
   EpdiyHighlevelState hl;
   // ambient temperature around device
@@ -23,11 +23,6 @@ class LilygoT547Display : public virtual PollingComponent, public virtual displa
   enum EpdDrawError err;
 
  public:
-  // Explicitly resolve ambiguous methods
-  using PollingComponent::get_setup_priority;
-  using PollingComponent::set_update_interval;
-  using PollingComponent::set_component_source;
-
   float get_setup_priority() const override;
 
   void set_clear_screen(bool clear);
