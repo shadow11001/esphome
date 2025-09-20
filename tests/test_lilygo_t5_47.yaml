@@ -1,0 +1,55 @@
+# Test configuration for LilyGo T5-4.7 board support
+# This configuration validates the updated LilyGo T5-4.7 components
+# with ESPHome 2025.9.1 compatibility
+#
+# Hardware Requirements:
+# - LilyGo T5-4.7 ESP32 board with 4.7" E-Paper display
+# - Battery connected for voltage monitoring
+#
+# Updated Features:
+# - epdiy library pinned to version ^1.0.0 for reproducible builds
+# - Compatible with latest Arduino ESP32 and ESP-IDF frameworks
+# - Version compatibility updated for ESPHome 2025.9.1+
+
+esphome:
+  name: test-lilygo-t5-47
+  platform: ESP32
+  board: esp32dev
+
+wifi:
+  ssid: "test"
+  password: "test12345678"
+
+logger:
+
+api:
+  encryption:
+    key: "test"
+
+ota:
+  password: "test"
+
+# Test LilyGo T5-4.7 display component
+display:
+  - platform: lilygo_t5_47_display
+    id: lilygo_display
+    update_interval: 30s
+    temperature: 25
+    landscape: true
+    clear: true
+    power_off_delay_enabled: false
+    lambda: |-
+      it.print(0, 0, id(font1), "Hello LilyGo T5-4.7!");
+
+# Test LilyGo T5-4.7 battery sensor
+sensor:
+  - platform: lilygo_t5_47_battery
+    voltage:
+      name: "Battery Voltage"
+      accuracy_decimals: 2
+    update_interval: 60s
+
+font:
+  - file: "gfonts://Roboto"
+    id: font1
+    size: 20

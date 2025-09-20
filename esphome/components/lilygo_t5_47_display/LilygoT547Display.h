@@ -8,15 +8,14 @@
 
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
-#include "epd_driver.h"
-#include "epd_highlevel.h"
+#include "epdiy.h"
 #endif
 
 namespace esphome {
 namespace lilygo_t5_47_display {
 
 // LilyGo-EPD47
-class LilygoT547Display : public PollingComponent, public display::DisplayBuffer {
+class LilygoT547Display : public display::DisplayBuffer, public PollingComponent {
  protected:
   EpdiyHighlevelState hl;
   // ambient temperature around device
@@ -46,7 +45,7 @@ class LilygoT547Display : public PollingComponent, public display::DisplayBuffer
   void poweroff();
   void on_shutdown() override;
 
-#if ESPHOME_VERSION_CODE >= VERSION_CODE(2022,6,0)  
+#if ESPHOME_VERSION_CODE >= VERSION_CODE(2025,9,0)  
   display::DisplayType get_display_type() override { return display::DisplayType::DISPLAY_TYPE_COLOR; }
 #endif
 

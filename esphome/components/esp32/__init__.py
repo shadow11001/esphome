@@ -130,7 +130,7 @@ def _arduino_check_versions(value):
     value = value.copy()
     lookups = {
         "dev": (cv.Version(2, 0, 0), "https://github.com/espressif/arduino-esp32.git"),
-        "latest": (cv.Version(1, 0, 6), None),
+        "latest": (cv.Version(2, 0, 11), None),
         "recommended": (RECOMMENDED_ARDUINO_FRAMEWORK_VERSION, None),
     }
 
@@ -165,7 +165,7 @@ def _esp_idf_check_versions(value):
     value = value.copy()
     lookups = {
         "dev": (cv.Version(4, 3, 1), "https://github.com/espressif/esp-idf.git"),
-        "latest": (cv.Version(4, 3, 0), None),
+        "latest": (cv.Version(4, 4, 6), None),
         "recommended": (RECOMMENDED_ESP_IDF_FRAMEWORK_VERSION, None),
     }
 
