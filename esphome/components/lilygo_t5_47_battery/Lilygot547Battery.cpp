@@ -33,7 +33,7 @@ void Lilygot547Battery::correct_adc_reference() {
   adc_cali_handle_t adc_cali_handle = nullptr;
   adc_cali_line_fitting_config_t cali_config = {
       .unit_id = ADC_UNIT_1,
-      .atten = ADC_ATTEN_DB_11,
+      .atten = ADC_ATTEN_DB_12,
       .bitwidth = ADC_BITWIDTH_12,
   };
   
