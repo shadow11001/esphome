@@ -39,7 +39,7 @@ async def to_code(config):
         sens = await sensor.new_sensor(conf)
         cg.add(var.set_voltage_sensor(sens))
 
-    cg.add_library("https://github.com/vroland/epdiy.git", None)
+    cg.add_library("https://github.com/vroland/epdiy.git#1.0.2", None)
     cg.add_build_flag("-DBOARD_HAS_PSRAM")
     cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
     cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
