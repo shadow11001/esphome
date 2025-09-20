@@ -29,19 +29,19 @@ void Lilygot547Battery::update_battery_info() {
 }
 
 void Lilygot547Battery::correct_adc_reference() {
-  // Use new ADC calibration API
+  // Use new ADC calibration API with line fitting
   adc_cali_handle_t adc_cali_handle = nullptr;
-  adc_cali_curve_fitting_config_t cali_config = {
+  adc_cali_line_fitting_config_t cali_config = {
       .unit_id = ADC_UNIT_1,
       .atten = ADC_ATTEN_DB_11,
       .bitwidth = ADC_BITWIDTH_12,
   };
   
-  esp_err_t ret = adc_cali_create_scheme_curve_fitting(&cali_config, &adc_cali_handle);
+  esp_err_t ret = adc_cali_create_scheme_line_fitting(&cali_config, &adc_cali_handle);
   if (ret == ESP_OK && adc_cali_handle != nullptr) {
     // Use default vref if calibration is not available
     this->vref = 1100;
-    adc_cali_delete_scheme_curve_fitting(adc_cali_handle);
+    adc_cali_delete_scheme_line_fitting(adc_cali_handle);
   }
 }
 
