@@ -7,7 +7,7 @@
     "ghcr.io/devcontainers/features/git:1": {},
     "ghcr.io/devcontainers/features/common-utils:2": {}
   },
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y mosquitto wget curl unzip && pip install --upgrade pip && pip install esphome platformio && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s -- -b /usr/local/bin && wget -qO- https://wokwi.com/cli/install.sh | bash && sudo ln -sf \"$HOME/.wokwi/bin/wokwi-cli\" /usr/local/bin/wokwi-cli",
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y mosquitto wget curl unzip && pip install --upgrade pip && pip install esphome platformio && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh -s -- -b /usr/local/bin && curl -L https://github.com/wokwi/wokwi-cli/releases/latest/download/wokwi-cli-linuxstatic-x64 -o /usr/local/bin/wokwi-cli && sudo chmod +x /usr/local/bin/wokwi-cli",
   "forwardPorts": [6052, 1883, 9011],
   "portsAttributes": {
     "6052": { "label": "ESPHome Dashboard" },
