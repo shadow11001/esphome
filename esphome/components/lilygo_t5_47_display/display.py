@@ -64,3 +64,10 @@ async def to_code(config):
     cg.add_build_flag("-UCONFIG_ADC_LEGACY_ADC_CALIBRATION")
     cg.add_build_flag("-DDISABLE_ALL_LIBRARY_WARNINGS")
     cg.add_build_flag("-DCONFIG_ESP_ADC_CAL_ENABLE=n")
+    
+    # Additional aggressive flags to disable legacy ADC initialization
+    cg.add_build_flag("-DCONFIG_ADC_LEGACY_DISABLE")
+    cg.add_build_flag("-DCONFIG_ESP_ADC_CAL_DISABLE")
+    cg.add_build_flag("-DNO_ARDUINO_ADC_INIT")
+    cg.add_build_flag("-DCONFIG_DISABLE_HAL_INIT_LOCK")
+    cg.add_build_flag("-DCONFIG_ADC_ONESHOT_FORCE_LEGACY_DISABLE")
