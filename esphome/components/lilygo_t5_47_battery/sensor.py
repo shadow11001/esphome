@@ -40,3 +40,8 @@ async def to_code(config):
         cg.add(var.set_voltage_sensor(sens))
 
     # Note: epdiy library is handled by the display component, not needed here for battery reading
+    
+    # Disable Arduino legacy ADC driver to prevent conflicts with ESP-IDF NG ADC
+    cg.add_build_flag("-DARDUINO_ADC_DISABLE")
+    cg.add_build_flag("-DCONFIG_DISABLE_HAL_LOCKS")
+    cg.add_build_flag("-DCONFIG_ADC_DISABLE_DAC=y")

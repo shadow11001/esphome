@@ -55,8 +55,12 @@ async def to_code(config):
     cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
     cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
     
-    # Disable ESP-IDF NG ADC driver to avoid conflicts with Arduino framework
-    cg.add_build_flag("-DCONFIG_ADC_ONESHOT_CTRL_FUNC_IN_IRAM=n")
-    cg.add_build_flag("-DCONFIG_ADC_ONESHOT_FORCE_USE_ADC2_ON_C3=n") 
-    cg.add_build_flag("-DCONFIG_ADC_DISABLE_DAC_OUTPUT=y")
-    cg.add_build_flag("-DCONFIG_ADC_SUPPRESS_DEPRECATE_WARN=y")
+    # Completely disable legacy ADC driver to prevent conflicts with ESP-IDF NG ADC
+    cg.add_build_flag("-DARDUINO_ADC_DISABLE") 
+    cg.add_build_flag("-DCONFIG_DISABLE_HAL_LOCKS")
+    cg.add_build_flag("-DCONFIG_ADC_DISABLE_DAC=y")
+    cg.add_build_flag("-DCONFIG_ADC_SUPPRESS_DEPRECATE_WARN=y") 
+    cg.add_build_flag("-DCONFIG_ADC_CALI_SUPPRESS_DEPRECATE_WARN=y")
+    cg.add_build_flag("-UCONFIG_ADC_LEGACY_ADC_CALIBRATION")
+    cg.add_build_flag("-DDISABLE_ALL_LIBRARY_WARNINGS")
+    cg.add_build_flag("-DCONFIG_ESP_ADC_CAL_ENABLE=n")
