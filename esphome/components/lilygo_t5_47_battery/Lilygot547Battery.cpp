@@ -1,10 +1,6 @@
 #include "Lilygot547Battery.h"
 #include "esphome/core/log.h"
 
-#ifdef USE_ARDUINO
-#include <Arduino.h>
-#endif
-
 namespace esphome {
 namespace lilygo_t5_47_battery {
 
@@ -29,11 +25,8 @@ void Lilygot547Battery::update_battery_info() {
   Lilygot547Battery::correct_adc_reference();
   // 36 main power supply ?
   // 35 battery ?
-#ifdef USE_ARDUINO
-  uint16_t v = analogRead(36);
-  double_t battery_voltage = ((double_t) v / 4095.0) * 2.0 * 3.3 * (this->vref / 1000.0);
-#elif defined(USE_ESP_IDF)
-  // For ESP-IDF, use oneshot ADC API to avoid driver conflicts
+  
+  // Use ESP-IDF NG ADC driver for both Arduino and ESP-IDF frameworks
   adc_oneshot_unit_handle_t adc_handle;
   adc_oneshot_unit_init_cfg_t init_config = {
       .unit_id = ADC_UNIT_1,
@@ -52,15 +45,14 @@ void Lilygot547Battery::update_battery_info() {
   ESP_ERROR_CHECK(adc_oneshot_del_unit(adc_handle));
 
   double_t battery_voltage = ((double_t) adc_raw / 4095.0) * 2.0 * 3.3 * (this->vref / 1000.0);
-#endif
+  
   if (this->voltage != nullptr) {
     this->voltage->publish_state(battery_voltage);
   }
 }
 
 void Lilygot547Battery::correct_adc_reference() {
-#ifdef USE_ESP_IDF
-  // Use new ADC calibration API with line fitting for ESP-IDF
+  // Use ESP-IDF NG ADC calibration for both Arduino and ESP-IDF frameworks
   adc_cali_handle_t adc_cali_handle = nullptr;
   adc_cali_line_fitting_config_t cali_config = {
       .unit_id = ADC_UNIT_1,
@@ -74,11 +66,6 @@ void Lilygot547Battery::correct_adc_reference() {
     this->vref = 1100;
     adc_cali_delete_scheme_line_fitting(adc_cali_handle);
   }
-#elif defined(USE_ARDUINO)
-  // For Arduino framework, use default vref
-  // Arduino's analogRead() handles ADC configuration internally
-  this->vref = 1100;
-#endif
 }
 
 }  // namespace lilygo_t5_47_battery
