@@ -3,12 +3,15 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
 
-// Use ESP-IDF NG ADC driver for both Arduino and ESP-IDF frameworks
+#ifdef USE_ARDUINO
+#include <Arduino.h>
+#endif
+
+#ifdef USE_ESP_IDF
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
 
-#ifdef USE_ESP_IDF
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
 #include "epdiy.h"
