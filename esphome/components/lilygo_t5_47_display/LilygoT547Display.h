@@ -6,9 +6,11 @@
 #include "esphome/core/hal.h"
 #include "esphome/core/version.h"
 
+#ifdef USE_EPDIY
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
 #include "epdiy.h"
+#endif
 #endif
 
 namespace esphome {
@@ -17,10 +19,12 @@ namespace lilygo_t5_47_display {
 // LilyGo-EPD47
 class LilygoT547Display : public display::DisplayBuffer {
  protected:
+#ifdef USE_EPDIY
   EpdiyHighlevelState hl;
   // ambient temperature around device
   uint8_t *fb;
   enum EpdDrawError err;
+#endif
 
  public:
   float get_setup_priority() const override;
