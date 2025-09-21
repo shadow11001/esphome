@@ -3,15 +3,8 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
 
-#ifdef USE_ARDUINO
+// Use Arduino's analogRead for all frameworks to avoid driver conflicts
 #include <Arduino.h>
-#endif
-
-#ifdef USE_ESP_IDF
-#include "esp_adc/adc_oneshot.h"
-#include "esp_adc/adc_cali.h"
-#include "esp_adc/adc_cali_scheme.h"
-#endif
 
 namespace esphome {
 namespace lilygo_t5_47_battery {
