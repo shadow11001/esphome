@@ -1,12 +1,17 @@
 #pragma once
-#include <Arduino.h>
 #include "esphome/core/component.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
 
+#ifdef USE_ARDUINO
+#include <Arduino.h>
+#endif
+
+#ifdef USE_ESP_IDF
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
+#endif
 
 #ifndef EPD_DRIVER
 #define EPD_DRIVER
