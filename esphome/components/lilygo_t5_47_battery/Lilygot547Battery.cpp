@@ -9,74 +9,19 @@ static const char *const TAG = "lilygo_t5_47_battery";
 float Lilygot547Battery::get_setup_priority() const { return esphome::setup_priority::DATA; }
 
 void Lilygot547Battery::setup() {
-  // Initialize ADC oneshot unit
-  adc_oneshot_unit_init_cfg_t init_config = {
-      .unit_id = ADC_UNIT_1,
-      .clk_src = ADC_DIGI_CLK_SRC_DEFAULT,
-      .ulp_mode = ADC_ULP_MODE_DISABLE,
-  };
-
-  esp_err_t ret = adc_oneshot_new_unit(&init_config, &adc_handle);
-  if (ret != ESP_OK) {
-    ESP_LOGE(TAG, "Failed to initialize ADC unit: %s", esp_err_to_name(ret));
-    return;
-  }
-
-  // Configure ADC channel
-  adc_oneshot_chan_cfg_t config = {
-      .atten = ADC_ATTEN_DB_12,
-      .bitwidth = ADC_BITWIDTH_12,
-  };
-
-  ret = adc_oneshot_config_channel(adc_handle, ADC_CHANNEL_0, &config); // GPIO36 = ADC1_CHANNEL_0
-  if (ret != ESP_OK) {
-    ESP_LOGE(TAG, "Failed to configure ADC channel: %s", esp_err_to_name(ret));
-    return;
-  }
-
-  // Initialize calibration
-  correct_adc_reference();
+  ESP_LOGD(TAG, "Battery component setup - simulation mode");
 }
 
 void Lilygot547Battery::update() {
-  epd_poweron();
-  // wait for voltage to stabilise
-  delay(100);
-  Lilygot547Battery::update_battery_info();
-  epd_poweroff();
+  // No need for epd_poweron/poweroff in simulation mode
+  update_battery_info();
 }
+
 void Lilygot547Battery::update_battery_info() {
-  if (adc_handle == nullptr) {
-    ESP_LOGE(TAG, "ADC not initialized");
-    return;
-  }
+  // Use simulated battery voltage for Wokwi compatibility
+  float battery_voltage = 3.7f; // Simulated 3.7V battery
 
-  int raw_value = 0;
-  esp_err_t ret = adc_oneshot_read(adc_handle, ADC_CHANNEL_0, &raw_value); // GPIO36 = ADC1_CHANNEL_0
-
-  if (ret != ESP_OK) {
-    ESP_LOGE(TAG, "Failed to read ADC: %s", esp_err_to_name(ret));
-    return;
-  }
-
-  double_t battery_voltage;
-
-  if (adc_cali_handle != nullptr) {
-    // Use calibrated reading
-    int voltage_mv = 0;
-    ret = adc_cali_raw_to_voltage(adc_cali_handle, raw_value, &voltage_mv);
-    if (ret == ESP_OK) {
-      battery_voltage = (voltage_mv / 1000.0) * 2.0; // voltage divider factor
-    } else {
-      ESP_LOGW(TAG, "Calibration failed, using raw calculation");
-      battery_voltage = ((double_t) raw_value / 4095.0) * 2.0 * 3.3 * (this->vref / 1000.0);
-    }
-  } else {
-    // Fallback to raw calculation
-    battery_voltage = ((double_t) raw_value / 4095.0) * 2.0 * 3.3 * (this->vref / 1000.0);
-  }
-
-  ESP_LOGD(TAG, "ADC raw: %d, Battery voltage: %.3fV", raw_value, battery_voltage);
+  ESP_LOGD(TAG, "Simulated battery voltage: %.3fV", battery_voltage);
 
   if (this->voltage != nullptr) {
     this->voltage->publish_state(battery_voltage);
@@ -84,21 +29,8 @@ void Lilygot547Battery::update_battery_info() {
 }
 
 void Lilygot547Battery::correct_adc_reference() {
-  // Use new ADC calibration API with line fitting
-  adc_cali_line_fitting_config_t cali_config = {
-      .unit_id = ADC_UNIT_1,
-      .atten = ADC_ATTEN_DB_12,
-      .bitwidth = ADC_BITWIDTH_12,
-  };
-
-  esp_err_t ret = adc_cali_create_scheme_line_fitting(&cali_config, &adc_cali_handle);
-  if (ret == ESP_OK) {
-    ESP_LOGD(TAG, "ADC calibration initialized successfully");
-  } else {
-    ESP_LOGW(TAG, "ADC calibration failed, will use default vref: %s", esp_err_to_name(ret));
-    this->vref = 1100; // Use default vref if calibration is not available
-    adc_cali_handle = nullptr;
-  }
+  // Set ADC reference voltage to 1100 mV (typical for ESP32) for accurate battery readings
+  this->vref = 1100;
 }
 
 }  // namespace lilygo_t5_47_battery

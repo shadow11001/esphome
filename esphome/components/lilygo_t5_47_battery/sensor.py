@@ -13,13 +13,13 @@ DEPENDENCIES = ["esp32"]
 
 from . import lilygo_t5_47_battery_ns
 
-Lilygot547Battery = lilygo_t5_47_battery_ns.class_(
-    "Lilygot547Battery", cg.PollingComponent
+LilygoT547Battery = lilygo_t5_47_battery_ns.class_(
+    "LilygoT547Battery", cg.PollingComponent
 )
 
 CONFIG_SCHEMA = cv.Schema(
     {
-        cv.GenerateID(): cv.declare_id(Lilygot547Battery),
+        cv.GenerateID(): cv.declare_id(LilygoT547Battery),
         cv.Optional(CONF_VOLTAGE): sensor.sensor_schema(
             unit_of_measurement=UNIT_VOLT,
             accuracy_decimals=2,
@@ -39,7 +39,10 @@ async def to_code(config):
         sens = await sensor.new_sensor(conf)
         cg.add(var.set_voltage_sensor(sens))
 
-    cg.add_library("https://github.com/vroland/epdiy.git", None)
-    cg.add_build_flag("-DBOARD_HAS_PSRAM")
-    cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
-    cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
+    # Removed epdiy library dependency for simulation-only battery component
+    # The display component will provide the epdiy library
+    # cg.add_library("https://github.com/vroland/epdiy.git", "v7")
+    # cg.add_build_flag("-DBOARD_HAS_PSRAM")
+    # cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
+    # cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
+    # cg.add_build_flag("-DCONFIG_EPD_DISABLE_ADC")
