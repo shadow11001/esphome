@@ -21,6 +21,9 @@ class Lilygot547Battery : public PollingComponent {
   sensor::Sensor *voltage{nullptr};
 
   int vref = 1100;
+  adc_oneshot_unit_handle_t adc_handle = nullptr;
+  adc_cali_handle_t adc_cali_handle = nullptr;
+
   float get_setup_priority() const override;
   void setup() override;
   void update() override;
