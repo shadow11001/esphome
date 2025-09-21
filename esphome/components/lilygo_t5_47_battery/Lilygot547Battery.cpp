@@ -11,15 +11,8 @@ float Lilygot547Battery::get_setup_priority() const { return esphome::setup_prio
 void Lilygot547Battery::setup() {}
 
 void Lilygot547Battery::update() {
-#ifdef USE_ESP_IDF
-  epd_poweron();
-  // wait for voltage to stabilise
-  delay(100);
-#endif
+  // No EPD power control needed - battery reading doesn't require EPD to be powered
   Lilygot547Battery::update_battery_info();
-#ifdef USE_ESP_IDF
-  epd_poweroff();
-#endif
 }
 void Lilygot547Battery::update_battery_info() {
   Lilygot547Battery::correct_adc_reference();

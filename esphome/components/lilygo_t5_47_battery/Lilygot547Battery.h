@@ -11,11 +11,6 @@
 #include "esp_adc/adc_oneshot.h"
 #include "esp_adc/adc_cali.h"
 #include "esp_adc/adc_cali_scheme.h"
-
-#ifndef EPD_DRIVER
-#define EPD_DRIVER
-#include "epdiy.h"
-#endif
 #endif
 
 namespace esphome {
