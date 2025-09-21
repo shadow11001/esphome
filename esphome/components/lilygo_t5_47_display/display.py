@@ -50,13 +50,13 @@ async def to_code(config):
     cg.add(var.set_landscape(config[CONF_LANDSCAPE]))
     cg.add(var.set_power_off_delay_enabled(config[CONF_POWER_OFF_DELAY_ENABLED]))
     
-    # Only include epdiy library for ESP-IDF framework to avoid driver conflicts
-    if cg.is_esp_idf():
-        cg.add_library("https://github.com/vroland/epdiy.git", None)
-        cg.add_build_flag("-DBOARD_HAS_PSRAM")
-        cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
-        cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
-        cg.add_define("USE_EPDIY")
-    else:
-        # Arduino framework - provide stub implementation without epdiy
-        cg.add_define("DISABLE_EPDIY")
+    cg.add_library("https://github.com/vroland/epdiy.git", None)
+    cg.add_build_flag("-DBOARD_HAS_PSRAM")
+    cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
+    cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
+    
+    # Disable ESP-IDF NG ADC driver to avoid conflicts with Arduino framework
+    cg.add_build_flag("-DCONFIG_ADC_ONESHOT_CTRL_FUNC_IN_IRAM=n")
+    cg.add_build_flag("-DCONFIG_ADC_ONESHOT_FORCE_USE_ADC2_ON_C3=n") 
+    cg.add_build_flag("-DCONFIG_ADC_DISABLE_DAC_OUTPUT=y")
+    cg.add_build_flag("-DCONFIG_ADC_SUPPRESS_DEPRECATE_WARN=y")
