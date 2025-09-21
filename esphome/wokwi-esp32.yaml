@@ -1,0 +1,31 @@
+esphome:
+  name: wokwi-esp32
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+logger:
+
+wifi:
+  ssid: "Wokwi-GUEST"
+  password: ""
+  ap:
+    ssid: "wokwi-esp32-fallback"
+    password: "password"
+
+mqtt:
+  broker: 127.0.0.1
+  port: 1883
+  discovery: false
+
+sensor:
+  - platform: dht
+    pin: GPIO4
+    model: DHT22
+    temperature:
+      name: "Virtual Temperature"
+    humidity:
+      name: "Virtual Humidity"
+    update_interval: 2s

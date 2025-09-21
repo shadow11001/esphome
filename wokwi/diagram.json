@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "author": "codespaces",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-v1", "id": "esp32", "top": -3.2, "left": -9.3, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht1", "top": 50, "left": 140, "attrs": { "temperature": "22", "humidity": "55" } }
+  ],
+  "connections": [
+    [ "dht1:VCC", "esp32:3V3", "red", [ "v20", "h-50" ] ],
+    [ "dht1:GND", "esp32:GND.1", "black", [ "v10", "h-30" ] ],
+    [ "dht1:DATA", "esp32:GPIO4", "green", [ "v-10", "h-70" ] ]
+  ]
+}
