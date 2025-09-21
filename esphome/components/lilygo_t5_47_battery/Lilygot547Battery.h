@@ -4,15 +4,6 @@
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
 
-#include "esp_adc/adc_oneshot.h"
-#include "esp_adc/adc_cali.h"
-#include "esp_adc/adc_cali_scheme.h"
-
-#ifndef EPD_DRIVER
-#define EPD_DRIVER
-#include "epdiy.h"
-#endif
-
 namespace esphome {
 namespace lilygo_t5_47_battery {
 
