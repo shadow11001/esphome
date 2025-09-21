@@ -1,12 +1,8 @@
 #pragma once
+#include <Arduino.h>
 #include "esphome/core/component.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/core/hal.h"
-
-// Use ESP-IDF NG ADC (driver_ng) for all frameworks to ensure consistency
-#include "esp_adc/adc_oneshot.h"
-#include "esp_adc/adc_cali.h"
-#include "esp_adc/adc_cali_scheme.h"
 
 namespace esphome {
 namespace lilygo_t5_47_battery {
