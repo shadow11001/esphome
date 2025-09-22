@@ -19,7 +19,7 @@ CONF_LANDSCAPE = "landscape"
 CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
 CONF_BATTERY = "battery"
 
-from . import lilygo_t5_47_display_battery_ns
+lilygo_t5_47_display_battery_ns = cg.esphome_ns.namespace("lilygo_t5_47_display_battery")
 
 LilygoT547DisplayBattery = lilygo_t5_47_display_battery_ns.class_(
     "LilygoT547DisplayBattery", display.DisplayBuffer
@@ -72,7 +72,7 @@ async def to_code(config):
             cg.add(var.set_voltage_sensor(voltage_sensor))
 
     # Add epdiy library and build flags
-    cg.add_library("https://github.com/vroland/epdiy.git", "v7")
+    cg.add_library("https://github.com/vroland/epdiy.git", "None")
     cg.add_build_flag("-DBOARD_HAS_PSRAM")
     cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
     cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
