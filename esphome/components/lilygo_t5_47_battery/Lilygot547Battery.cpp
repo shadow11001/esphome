@@ -18,19 +18,31 @@ void Lilygot547Battery::update() {
 }
 
 void Lilygot547Battery::update_battery_info() {
-  // Use simulated battery voltage for Wokwi compatibility
-  float battery_voltage = 3.7f; // Simulated 3.7V battery
-
-  ESP_LOGD(TAG, "Simulated battery voltage: %.3fV", battery_voltage);
-
+  Lilygot547Battery::correct_adc_reference();
+  // 36 main power supply ?
+  // 35 battery ?
+  uint16_t v = analogRead(36);
+  double_t battery_voltage = ((double_t) v / 4095.0) * 2.0 * 3.3 * (this->vref / 1000.0);
   if (this->voltage != nullptr) {
     this->voltage->publish_state(battery_voltage);
   }
 }
 
 void Lilygot547Battery::correct_adc_reference() {
-  // Set ADC reference voltage to 1100 mV (typical for ESP32) for accurate battery readings
-  this->vref = 1100;
+  // Use new ADC calibration API with line fitting
+  adc_cali_handle_t adc_cali_handle = nullptr;
+  adc_cali_line_fitting_config_t cali_config = {
+      .unit_id = ADC_UNIT_1,
+      .atten = ADC_ATTEN_DB_12,
+      .bitwidth = ADC_BITWIDTH_12,
+  };
+
+  esp_err_t ret = adc_cali_create_scheme_line_fitting(&cali_config, &adc_cali_handle);
+  if (ret == ESP_OK && adc_cali_handle != nullptr) {
+    // Use default vref if calibration is not available
+    this->vref = 1100;
+    adc_cali_delete_scheme_line_fitting(adc_cali_handle);
+  }
 }
 
 }  // namespace lilygo_t5_47_battery
