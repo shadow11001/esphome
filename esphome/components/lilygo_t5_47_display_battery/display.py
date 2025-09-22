@@ -19,7 +19,7 @@ CONF_LANDSCAPE = "landscape"
 CONF_POWER_OFF_DELAY_ENABLED = "power_off_delay_enabled"
 CONF_BATTERY = "battery"
 
-lilygo_t5_47_display_battery_ns = cg.esphome_ns.namespace("lilygo_t5_47_display_battery")
+from . import lilygo_t5_47_display_battery_ns
 
 LilygoT547DisplayBattery = lilygo_t5_47_display_battery_ns.class_(
     "LilygoT547DisplayBattery", display.DisplayBuffer
@@ -43,6 +43,7 @@ CONFIG_SCHEMA = cv.All(
             }),
         }
     ).extend(cv.polling_component_schema("5s")),
+    # Only one of CONF_PAGES or CONF_LAMBDA is allowed to avoid conflicting display page definitions.
     cv.has_at_most_one_key(CONF_PAGES, CONF_LAMBDA),
 )
 
@@ -62,19 +63,21 @@ async def to_code(config):
     cg.add(var.set_temperature(config[CONF_TEMPERATURE]))
     cg.add(var.set_landscape(config[CONF_LANDSCAPE]))
     cg.add(var.set_power_off_delay_enabled(config[CONF_POWER_OFF_DELAY_ENABLED]))
-
-    # Handle battery configuration
+    # Handle battery configuration.
+    # If the 'battery' key is present in the config, it expects a dictionary with an optional 'voltage' sensor schema.
+    # The voltage sensor is created and registered for battery voltage monitoring.
     if CONF_BATTERY in config:
         battery_config = config[CONF_BATTERY]
         if CONF_VOLTAGE in battery_config:
             voltage_config = battery_config[CONF_VOLTAGE]
             voltage_sensor = await sensor.new_sensor(voltage_config)
             cg.add(var.set_voltage_sensor(voltage_sensor))
+            cg.add(var.set_voltage_sensor(voltage_sensor))
 
     # Add epdiy library and build flags
-    cg.add_library("https://github.com/vroland/epdiy.git", "master")
+    cg.add_library("https://github.com/vroland/epdiy.git", "v7")
     cg.add_build_flag("-DBOARD_HAS_PSRAM")
-    cg.add_build_flag("-DCONFIG_EPD_DISPLAY_TYPE_ED047TC1")
-    cg.add_build_flag("-DCONFIG_EPD_BOARD_REVISION_LILYGO_T5_47")
+    # Disable ADC in epdiy to prevent conflicts with other components that use the ADC, such as battery voltage measurement.
+    cg.add_build_flag("-DCONFIG_EPD_DISABLE_ADC")
     # Disable ADC in epdiy to prevent conflicts
     cg.add_build_flag("-DCONFIG_EPD_DISABLE_ADC")
